@@ -1,0 +1,14 @@
+{
+  "name": "AFKBot_ByRanger",
+  "version": "1.0.0",
+  "description": "The Only Working Way To Make An Aternos Server Run For 24/7",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Ranger",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-protocol": "^1.35.0"
+  }
+}
