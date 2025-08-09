@@ -1,14 +1,18 @@
 {
-  "name": "AFKBot_ByRanger",
+  "name": "Aternos 24-7 Bot By Ranger",
   "version": "1.0.0",
-  "description": "The Only Working Way To Make An Aternos Server Run For 24/7",
+  "description": "A Way To Make You'r Aternos Server Run For 24/7",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Ranger",
-  "license": "MIT",
   "dependencies": {
-    "minecraft-protocol": "^1.35.0"
-  }
+    "minecraft-protocol": "^1.49.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Ranger",
+  "license": "MIT"
 }
