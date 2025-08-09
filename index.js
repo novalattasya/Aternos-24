@@ -20,21 +20,6 @@ function startBot() {
     keepAlive: true,
   });
 
-  function moveLoop(dir) {
-    if (!isAlive) return;
-    const dz = 0.25 * dir;
-    pos.z += dz;
-
-    client.write('position', {
-      x: pos.x,
-      y: pos.y,
-      z: pos.z,
-      onGround: true,
-    });
-
-    setTimeout(() => moveLoop(-dir), 500);
-  }
-
   function startRotation() {
     if (rotatingInterval) clearInterval(rotatingInterval);
     rotatingInterval = setInterval(() => {
@@ -50,11 +35,24 @@ function startBot() {
     }, 500);
   }
 
+  function safeMemoryCleanUp() {
+    const usedMB = process.memoryUsage().heapUsed / 1024 / 1024;
+    if (usedMB > 30) {
+      pos = { x: pos.x, y: pos.y, z: pos.z };
+      yaw = yaw % 360;
+      pitch = pitch % 360;
+
+      // Manual garbage collection
+      if (global.gc) {
+        global.gc();
+      }
+    }
+  }
+
   client.on('position', (data) => {
     pos = { x: data.x, y: data.y, z: data.z };
     if (!isAlive) {
       isAlive = true;
-      moveLoop(1);
     }
     startRotation();
   });
@@ -64,25 +62,26 @@ function startBot() {
       isAlive = false;
       setTimeout(() => {
         client.write('client_command', { actionId: 0 });
-      }, 1000);
+      }, 500);
     } else if (!isAlive && data.health > 0) {
       isAlive = true;
-      moveLoop(1);
       startRotation();
     }
   });
 
   client.on('end', () => {
-    console.log('[x] Disconnected. Reconnecting in 3s...');
+    console.log('[x] Disconnected. Reconnecting in 3 seconds...');
     clearInterval(rotatingInterval);
     rotatingInterval = null;
     setTimeout(startBot, 3000);
   });
 
   client.on('error', (err) => {
-    console.log('[!] Error:', err.message);
+    console.log(`[!] Error: ${err.message}`);
     setTimeout(startBot, 3000);
   });
+
+  setInterval(safeMemoryCleanUp, 10000);
 }
 
 startBot();
