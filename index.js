@@ -1,6 +1,6 @@
 const mc = require('minecraft-protocol');
 
-const SERVER_HOST = 'goodluckdawg.aternos.me';
+const SERVER_HOST = 'mc.nopal.site';
 const SERVER_PORT = 36134;
 const MC_VERSION = '1.21.1';    //Do Not Change The Version, Install Via Version Or Via Backward Depending On You'r Aternos Server Version.
 const USERNAME = 'AFKBot';
@@ -85,4 +85,5 @@ function startBot() {
 }
 
 startBot();
+
 
